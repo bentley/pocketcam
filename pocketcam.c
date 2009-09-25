@@ -1,3 +1,5 @@
+/* This program is in the public domain. */
+
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
