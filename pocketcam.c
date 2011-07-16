@@ -108,18 +108,18 @@ main(int argc, char* argv[])
 
 		fseek(sav, 0x2000 + picNumber * 0x1000, SEEK_SET);
 
-		unsigned short int pixArray[112][128];
+		unsigned short int pixels[112][128];
 
-		for (int vpos = 0; vpos < 14; ++vpos) {
-			for (int hpos = 0; hpos < 16; ++hpos) {
+		for (int y = 0; y < 14; ++y) {
+			for (int x = 0; x < 16; ++x) {
 				for (int i = 0; i < 8; ++i) {
-					int byteOne = fgetc(sav),
-					    byteTwo = fgetc(sav);
+					int byte1, byte2;
+					byte1 = fgetc(sav);
+					byte2 = fgetc(sav);
 					for (int j = 0; j < 8; ++j) {
-						pixArray[vpos * 8 + i][hpos *
-						    8 + j] = (((byteTwo >>
-						    (7 - j) & 1)) << 1 |
-						    ((byteOne >> (7 - j)
+						pixels[y * 8 + i][x * 8 + j] =
+						    (((byte2 >> (7 - j) & 1))
+						    << 1 | ((byte1 >> (7 - j)
 						    & 1)));
 					}
 				}
@@ -141,7 +141,7 @@ main(int argc, char* argv[])
 		for (int i = 112; i >= 0; --i)
 			for (int j = 0; j < 128; ++j) {
 				int byte;
-				switch (pixArray[i][j]) {
+				switch (pixels[i][j]) {
 				case 0:
 					byte = 0xFF;
 					break;
