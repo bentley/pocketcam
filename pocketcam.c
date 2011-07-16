@@ -12,7 +12,7 @@ main(int argc, char* argv[])
 	if (argc > 1) {
 		sav = fopen(argv[argc - 1], "r");
 
-		if (NULL == sav) {
+		if (sav == NULL) {
 			perror("Error opening save file");
 			exit(1);
 		}
@@ -130,7 +130,7 @@ main(int argc, char* argv[])
 		snprintf(filename, 13, "bitmap%02d.bmp", picNumber);
 		FILE* bitmap = fopen(filename, "w");
 
-		if (NULL == bitmap) {
+		if (bitmap == NULL) {
 			perror("Error creating new bitmap file");
 			exit(1);
 		}
