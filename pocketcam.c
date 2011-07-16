@@ -8,13 +8,6 @@ void byteToPixels(FILE *,unsigned char);
 
 int main(int argc,char* argv[]) {
 
-/*
-	for(int i = 0;i < argc;++i)
-	{
-		
-	}
-*/
-
 	FILE* sav;
 
 	if(argc > 1) {
