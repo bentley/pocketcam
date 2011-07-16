@@ -4,16 +4,17 @@
 #include <math.h>
 #include <stdlib.h>
 
-void byteToPixels(FILE *,unsigned char);
+void byteToPixels(FILE *, unsigned char);
 
-int main(int argc,char* argv[]) {
-
+int
+main(int argc, char* argv[])
+{
 	FILE* sav;
 
-	if(argc > 1) {
-		sav = fopen(argv[argc - 1],"r");
+	if (argc > 1) {
+		sav = fopen(argv[argc - 1], "r");
 
-		if(NULL == sav) {
+		if (NULL == sav) {
 			perror("Error opening save file");
 			exit(1);
 		}
@@ -102,69 +103,66 @@ int main(int argc,char* argv[]) {
 0xC0,0xC0,0x80,0,0xC0,0xC0,0xA0,0,0xF0,0xFB,0xFF,0,0xA4,0xA0,0xA0,0,
 0x80,0x80,0x80,0,0,0,0xFF,0,0,0xFF,0,0,0,0xFF,0xFF,0,
 0xFF,0,0,0,0xFF,0,0xFF,0,0xFF,0xFF,0,0,0xFF,0xFF,0xFF,0
+};
 
-
-
-		};
-
-	for(int picNumber = 0;picNumber < 30;++picNumber) {
+	for (int picNumber = 0; picNumber < 30; ++picNumber) {
 		/* copy image to memory */
 
-		fseek(sav,0x2000 + picNumber * 0x1000,SEEK_SET);
-
+		fseek(sav, 0x2000 + picNumber * 0x1000, SEEK_SET);
 
 		unsigned short int pixArray[112][128];
 
-		for(int vpos = 0;vpos < 14;++vpos) {
-			for(int hpos = 0;hpos < 16;++hpos) {
-				for(int i = 0;i < 8;++i) {
-					unsigned int byteOne = fgetc(sav), byteTwo = fgetc(sav);
-					for(int j = 0;j < 8;++j) {
-						pixArray[vpos * 8 + i][hpos * 8 + j] =
-								(((byteTwo >> (7 - j) & 1)) << 1 | ((byteOne >> (7 - j) & 1)));
+		for (int vpos = 0; vpos < 14; ++vpos) {
+			for (int hpos = 0; hpos < 16; ++hpos) {
+				for (int i = 0; i < 8; ++i) {
+					unsigned int byteOne = fgetc(sav),
+					    byteTwo = fgetc(sav);
+					for (int j = 0; j < 8; ++j) {
+						pixArray[vpos * 8 + i][hpos *
+						    8 + j] = (((byteTwo >>
+						    (7 - j) & 1)) << 1 |
+						    ((byteOne >> (7 - j)
+						    & 1)));
 					}
 				}
 			}
 		}
 
 		char filename[13];
-		snprintf(filename,13,"bitmap%02d.bmp",picNumber);
-		FILE* bitmap = fopen(filename,"w");
+		snprintf(filename, 13, "bitmap%02d.bmp", picNumber);
+		FILE* bitmap = fopen(filename, "w");
 
-		if(NULL == bitmap) {
+		if (NULL == bitmap) {
 			perror("Error creating new bitmap file");
 			exit(1);
 		}
 
-		for(int i = 0; i < 0x436; ++i) {
+		for (int i = 0; i < 0x436; ++i)
 			fputc(bitmapHeader[i],bitmap);
-		}
 
-
-
-		for(int i = 112;i >= 0;--i) {
-			for(int j = 0;j < 128;++j) {
+		for (int i = 112; i >= 0; --i)
+			for (int j = 0; j < 128; ++j) {
 				int byte;
-				switch(pixArray[i][j]) {
-					case 0:
-						byte = 0xFF;
-						break;
-					case 1:
-						byte = 0xED;
-						break;
-					case 2:
-						byte = 0x9B;
-						break;
-					case 3:
-						byte = 0x49;
+				switch (pixArray[i][j]) {
+				case 0:
+					byte = 0xFF;
+					break;
+				case 1:
+					byte = 0xED;
+					break;
+				case 2:
+					byte = 0x9B;
+					break;
+				case 3:
+					byte = 0x49;
 				}
-				fputc(byte,bitmap);
+				fputc(byte, bitmap);
 			}
-		}
 
 		fclose(bitmap);
 	}
+
 	fclose(sav);
+
 	exit(0);
 }
-
