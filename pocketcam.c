@@ -4,8 +4,6 @@
 #include <math.h>
 #include <stdlib.h>
 
-void byteToPixels(FILE *, unsigned char);
-
 int
 main(int argc, char* argv[])
 {
