@@ -113,7 +113,7 @@ main(int argc, char* argv[])
 		for (int vpos = 0; vpos < 14; ++vpos) {
 			for (int hpos = 0; hpos < 16; ++hpos) {
 				for (int i = 0; i < 8; ++i) {
-					unsigned int byteOne = fgetc(sav),
+					int byteOne = fgetc(sav),
 					    byteTwo = fgetc(sav);
 					for (int j = 0; j < 8; ++j) {
 						pixArray[vpos * 8 + i][hpos *
