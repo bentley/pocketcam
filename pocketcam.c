@@ -23,7 +23,7 @@
 int
 main(int argc, char* argv[])
 {
-	FILE* sav;
+	FILE *sav;
 
 	if (argc > 1) {
 		sav = fopen(argv[argc - 1], "r");
@@ -33,7 +33,7 @@ main(int argc, char* argv[])
 			exit(1);
 		}
 	} else {
-		printf("usage: pocketcam [savefile]\n");
+		printf("usage: pocketcam savefile\n");
 		exit(0);
 	}
 
